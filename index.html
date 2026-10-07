@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Propuesta web para tu perfumería — Duff</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#140B14; --bg2:#1C111C; --ink:#F3E9E1; --soft:#A8949F; --dim:#6F5D68; --line:rgba(243,233,225,.12);
+  --amber:#E2A15A; --amber2:#F4C98F; --rose:#C97C86; --plum:#4A2147;
+  --serif:"Instrument Serif","Didot","Bodoni 72",Georgia,serif;
+  --sans:"Geist","Helvetica Neue",system-ui,-apple-system,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#140B14;--bg2:#1C111C;--ink:#F3E9E1;--soft:#A8949F}}
+:root[data-theme="dark"]{--bg:#140B14;--bg2:#1C111C;--ink:#F3E9E1;--soft:#A8949F}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3{font-family:var(--serif);font-weight:400;margin:0;line-height:.95;letter-spacing:-.02em}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:1px solid var(--amber);outline-offset:4px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+
+/* grain */
+body::after{content:"";position:fixed;inset:-50%;pointer-events:none;z-index:50;opacity:.09;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain 1.2s steps(4) infinite}
+@keyframes grain{0%{transform:translate(0,0)}25%{transform:translate(-3%,2%)}50%{transform:translate(2%,-3%)}75%{transform:translate(-2%,-1%)}100%{transform:translate(0,0)}}
+
+/* cursor aura */
+.aura{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(closest-side,rgba(226,161,90,.16),rgba(201,124,134,.06) 55%,transparent);transition:transform .6s cubic-bezier(.2,.7,.2,1);will-change:transform}
+
+/* NAV */
+nav{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:28px 0;font-size:14px;color:var(--soft)}
+nav .logo{font-family:var(--serif);font-size:30px;color:var(--ink);letter-spacing:-.01em}
+nav .logo sup{font-family:var(--sans);font-size:10px;color:var(--amber);margin-left:2px}
+nav .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--amber);margin-right:8px;box-shadow:0 0 12px var(--amber)}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
+.hero::before{content:"";position:absolute;right:-12%;top:8%;width:70vw;max-width:900px;aspect-ratio:1;border-radius:50%;z-index:-1;
+  background:radial-gradient(closest-side,rgba(226,161,90,.45),rgba(201,124,134,.2) 45%,rgba(74,33,71,.25) 70%,transparent);filter:blur(30px)}
+.hero-grid{flex:1;display:grid;grid-template-columns:1.35fr .65fr;align-items:end;gap:24px;padding-bottom:56px}
+.hero h1{font-size:clamp(64px,12.5vw,200px);line-height:.86}
+.hero h1 .i{font-style:italic;color:var(--amber2)}
+.hero h1 .line{display:block;overflow:hidden;padding-bottom:.06em}
+.hero h1 .line span{display:inline-block;transform:translateY(105%);animation:up 1.1s cubic-bezier(.2,.75,.15,1) forwards}
+.hero h1 .line:nth-child(2) span{animation-delay:.12s}
+.hero h1 .line:nth-child(3) span{animation-delay:.24s}
+@keyframes up{to{transform:none}}
+.hero-foot{display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:end;padding:28px 0 40px;border-top:1px solid var(--line);font-size:15px;color:var(--soft)}
+.hero-foot p{max-width:34ch}
+.hero-foot .scroll{justify-self:end;text-align:right}
+.bottle-wrap{position:relative;justify-self:center;align-self:center}
+.bottle{width:min(260px,40vw);height:auto;display:block;animation:float 7s ease-in-out infinite;filter:drop-shadow(0 40px 60px rgba(226,161,90,.35))}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-16px) rotate(1deg)}}
+.badge{position:absolute;right:-40px;bottom:-30px;width:130px;height:130px;animation:spin 18s linear infinite}
+.badge text{font-family:var(--sans);font-size:9.4px;letter-spacing:3.2px;fill:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* MARQUEE */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;padding:22px 0;background:var(--bg2)}
+.track{display:flex;width:max-content;animation:mq 38s linear infinite}
+.track span{font-family:var(--serif);font-size:clamp(34px,5vw,60px);padding:0 28px;white-space:nowrap;color:var(--soft)}
+.track span:nth-child(odd){font-style:italic;color:var(--ink)}
+.track b{color:var(--amber);font-weight:400;align-self:center;font-size:26px}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* SECTIONS */
+section{position:relative;z-index:1;padding:clamp(88px,12vw,160px) 0}
+.kicker{font-size:14px;color:var(--amber);margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:36px;height:1px;background:var(--amber)}
+.big{font-size:clamp(48px,7.5vw,112px)}
+.big em{color:var(--amber2)}
+.intro{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:end;margin-bottom:72px}
+.intro p{color:var(--soft);font-size:18px;max-width:44ch}
+
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 1s ease,transform 1s cubic-bezier(.2,.75,.15,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* FEATURES */
+.rows{border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:32px;padding:32px 0;border-bottom:1px solid var(--line);position:relative;transition:padding .5s cubic-bezier(.2,.75,.15,1)}
+.row::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(226,161,90,.10),transparent 70%);opacity:0;transition:opacity .5s}
+.row:hover{padding-left:20px}
+.row:hover::before{opacity:1}
+.row h3{font-size:clamp(32px,4vw,52px)}
+.row p{color:var(--soft);align-self:center;max-width:42ch;position:relative}
+
+/* PYRAMID */
+.pyr{margin-top:120px;display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center}
+.pyr h3{font-size:clamp(40px,5vw,72px)}
+.pyr p{color:var(--soft);margin-top:24px;max-width:40ch}
+.tiers{display:flex;flex-direction:column;align-items:center;gap:10px}
+.tier{text-align:center;padding:22px 16px;border:1px solid var(--line);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));backdrop-filter:blur(8px)}
+.tier small{display:block;font-size:13px;color:var(--amber);margin-bottom:2px}
+.tier span{font-family:var(--serif);font-size:clamp(22px,2.4vw,30px);font-style:italic}
+.tier:nth-child(1){width:54%}.tier:nth-child(2){width:76%;border-color:rgba(226,161,90,.35)}.tier:nth-child(3){width:100%;border-color:rgba(226,161,90,.6);box-shadow:0 20px 60px -20px rgba(226,161,90,.35)}
+
+/* PLANS */
+.plans-sec{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
+.plan{position:relative;border:1px solid var(--line);border-radius:28px;padding:36px 30px 32px;display:flex;flex-direction:column;background:rgba(255,255,255,.02);transition:transform .5s cubic-bezier(.2,.75,.15,1),border-color .5s}
+.plan:hover{transform:translateY(-6px);border-color:rgba(243,233,225,.28)}
+.plan h3{font-size:40px}
+.plan .for{color:var(--soft);font-size:15px;margin-top:10px;min-height:48px}
+.price{font-family:var(--serif);font-size:clamp(52px,5.4vw,76px);line-height:1;margin:36px 0 6px;letter-spacing:-.03em}
+.price sup{font-family:var(--sans);font-size:13px;color:var(--soft);vertical-align:top;margin-left:4px;letter-spacing:0;position:relative;top:10px}
+.time{font-size:14px;color:var(--soft);padding-bottom:26px;margin-bottom:26px;border-bottom:1px solid var(--line)}
+.plan ul{list-style:none;padding:0;margin:0;display:grid;gap:13px;font-size:15.5px}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.plan li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--amber);margin-top:9px;box-shadow:0 0 10px var(--amber)}
+.plan li.no{color:var(--dim)}
+.plan li.no::before{background:none;border:1px solid var(--dim);box-shadow:none}
+.plan.star{border:none;background:radial-gradient(120% 80% at 50% 0%,rgba(226,161,90,.38),rgba(201,124,134,.14) 50%,rgba(28,17,28,.9) 85%),var(--bg);transform:translateY(-18px)}
+.plan.star::before{content:"";position:absolute;inset:0;border-radius:28px;padding:1px;pointer-events:none;
+  background:conic-gradient(from 180deg,rgba(244,201,143,.9),rgba(201,124,134,.3),rgba(244,201,143,.1),rgba(244,201,143,.9));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.plan.star:hover{transform:translateY(-24px)}
+.plan.star .time{border-color:rgba(244,201,143,.25)}
+.tag{position:absolute;top:26px;right:26px;font-size:12.5px;font-weight:500;color:#1C111C;background:var(--amber2);padding:6px 12px;border-radius:999px}
+.care{margin-top:24px;display:grid;grid-template-columns:auto 1fr auto;gap:36px;align-items:center;padding:30px 36px;border:1px solid var(--line);border-radius:28px}
+.care .p{font-family:var(--serif);font-size:56px;line-height:1;white-space:nowrap}
+.care .p small{font-family:var(--sans);font-size:14px;color:var(--soft)}
+.care h3{font-family:var(--sans);font-weight:500;font-size:18px;letter-spacing:0;line-height:1.3}
+.care p{color:var(--soft);font-size:15.5px;margin-top:4px}
+.care .np{font-size:14px;color:var(--amber);white-space:nowrap}
+.upgrade{margin-top:28px;text-align:center;color:var(--soft);font-size:15.5px}
+.upgrade em{font-family:var(--serif);font-size:22px;color:var(--ink)}
+
+/* PROCESS */
+.process{display:grid;grid-template-columns:.8fr 1.2fr;gap:64px}
+.process .stick{position:sticky;top:48px;align-self:start}
+.process .stick p{color:var(--soft);margin-top:24px;max-width:32ch}
+.days{font-family:var(--serif);font-size:clamp(96px,14vw,200px);line-height:.85;margin-top:40px;color:transparent;-webkit-text-stroke:1px var(--amber)}
+.days small{display:block;font-family:var(--sans);-webkit-text-stroke:0;color:var(--soft);font-size:15px;margin-top:14px}
+.steps{list-style:none;padding:0;margin:0;counter-reset:s}
+.steps li{counter-increment:s;display:grid;grid-template-columns:110px 1fr;gap:24px;padding:40px 0;border-top:1px solid var(--line)}
+.steps li:last-child{border-bottom:1px solid var(--line)}
+.steps li::before{content:counter(s,decimal-leading-zero);font-family:var(--serif);font-size:72px;line-height:.8;font-style:italic;color:var(--amber2)}
+.steps h3{font-size:36px;margin-bottom:10px}
+.steps p{color:var(--soft);max-width:44ch}
+
+/* TERMS */
+.terms{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.terms h3{font-size:clamp(40px,4.4vw,60px);margin-bottom:32px}
+.pay{display:grid;gap:12px}
+.pay div{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center;padding:22px 26px;border:1px solid var(--line);border-radius:20px}
+.pay b{font-family:var(--serif);font-weight:400;font-size:28px;font-style:italic;color:var(--amber2)}
+.pay span{color:var(--soft);font-size:15.5px}
+.methods{margin-top:18px;font-size:15px;color:var(--soft)}
+.know{list-style:none;padding:0;margin:0}
+.know li{padding:20px 0;border-top:1px solid var(--line);color:var(--soft)}
+.know li:last-child{border-bottom:1px solid var(--line)}
+.know strong{color:var(--ink);font-weight:500}
+
+/* CTA */
+.cta{position:relative;z-index:1;overflow:hidden;text-align:center;padding:clamp(110px,14vw,200px) 0 60px;isolation:isolate}
+.cta::before{content:"";position:absolute;left:50%;bottom:-40%;width:110vw;aspect-ratio:1;transform:translateX(-50%);border-radius:50%;z-index:-1;
+  background:radial-gradient(closest-side,rgba(226,161,90,.42),rgba(201,124,134,.16) 45%,transparent 72%);filter:blur(20px)}
+.cta h2{font-size:clamp(60px,11vw,180px);line-height:.88}
+.cta h2 em{color:var(--amber2)}
+.cta p{color:var(--soft);max-width:46ch;margin:32px auto 0}
+.btn{display:inline-flex;align-items:center;gap:14px;margin-top:48px;background:var(--ink);color:var(--bg);text-decoration:none;font-weight:500;padding:20px 34px;border-radius:999px;font-size:17px;transition:background .3s,transform .3s}
+.btn:hover{background:var(--amber2);transform:scale(1.04)}
+.btn i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--amber)}
+.sign{margin-top:120px;display:flex;justify-content:space-between;gap:20px;font-size:14px;color:var(--soft);padding-top:28px;border-top:1px solid var(--line);text-align:left}
+.sign strong{font-family:var(--serif);font-weight:400;font-size:26px;color:var(--ink);display:block}
+
+@media (max-width:900px){
+  .hero-grid{grid-template-columns:1fr;align-items:start;padding-top:24px}
+  .bottle-wrap{order:-1;justify-self:end;margin-right:24px}
+  .bottle{width:150px}
+  .badge{width:96px;height:96px;right:auto;left:-70px;bottom:0}
+  .hero-foot{grid-template-columns:1fr;gap:12px}
+  .hero-foot .scroll,.hero-foot .mid{display:none}
+  .intro,.pyr,.process,.terms{grid-template-columns:1fr;gap:32px}
+  .row{grid-template-columns:1fr;gap:10px;padding:26px 0}
+  .plans{grid-template-columns:1fr}
+  .plan.star{transform:none;order:-1}
+  .plan.star:hover{transform:none}
+  .care{grid-template-columns:1fr;gap:12px;padding:26px}
+  .process .stick{position:static}
+  .steps li{grid-template-columns:64px 1fr;gap:14px;padding:30px 0}
+  .steps li::before{font-size:48px}
+  .steps h3{font-size:30px}
+  .sign{flex-direction:column}
+  .pyr{margin-top:88px}
+  .aura{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .hero h1 .line span{transform:none}
+  .reveal{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="aura" aria-hidden="true"></div>
+
+<header class="hero">
+  <div class="wrap" style="display:flex;flex-direction:column;flex:1;width:100%">
+    <nav><span class="logo">Duff<sup>®</sup></span><span><i class="dot"></i>Propuesta web, octubre 2026</span></nav>
+    <div class="hero-grid">
+      <h1><span class="line"><span>Tu perfumería</span></span><span class="line"><span class="i">abierta</span></span><span class="line"><span>las 24 horas.</span></span></h1>
+      <div class="bottle-wrap" aria-hidden="true">
+        <svg class="bottle" viewBox="0 0 200 320">
+          <defs>
+            <linearGradient id="liq" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7CF95"/><stop offset=".5" stop-color="#E2A15A"/><stop offset="1" stop-color="#9A5A24"/></linearGradient>
+            <linearGradient id="cap" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7A4A1E"/><stop offset=".45" stop-color="#F2C584"/><stop offset=".6" stop-color="#C98B43"/><stop offset="1" stop-color="#6E401A"/></linearGradient>
+            <linearGradient id="gl" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset=".5" stop-color="#fff" stop-opacity=".04"/><stop offset="1" stop-color="#fff" stop-opacity=".16"/></linearGradient>
+            <clipPath id="body"><rect x="28" y="96" width="144" height="210" rx="34"/></clipPath>
+          </defs>
+          <rect x="62" y="8" width="76" height="62" rx="8" fill="url(#cap)"/>
+          <rect x="80" y="68" width="40" height="30" fill="#fff" fill-opacity=".14" stroke="#fff" stroke-opacity=".3"/>
+          <g clip-path="url(#body)">
+            <rect x="28" y="96" width="144" height="210" fill="url(#gl)"/>
+            <path d="M20 160 Q100 146 180 160 V320 H20Z" fill="url(#liq)"/>
+            <rect x="44" y="110" width="12" height="170" rx="6" fill="#fff" fill-opacity=".35"/>
+          </g>
+          <rect x="28" y="96" width="144" height="210" rx="34" fill="none" stroke="#fff" stroke-opacity=".4" stroke-width="1.5"/>
+          <rect x="60" y="196" width="80" height="44" fill="#140B14" fill-opacity=".85" stroke="#F4C98F" stroke-opacity=".6"/>
+          <text x="100" y="224" text-anchor="middle" font-family="Instrument Serif, Georgia, serif" font-size="20" font-style="italic" fill="#F3E9E1">tu marca</text>
+        </svg>
+        <svg class="badge" viewBox="0 0 130 130"><defs><path id="c" d="M65,65 m-50,0 a50,50 0 1,1 100,0 a50,50 0 1,1 -100,0"/></defs><text><textPath href="#c">PROPUESTA WEB · PERFUMERÍA · DUFF · 2026 ·</textPath></text></svg>
+      </div>
+    </div>
+    <div class="hero-foot">
+      <p>Un perfume se compra por cómo te hace sentir. Tu página tiene que transmitir eso antes de que el cliente lo huela.</p>
+      <span class="mid">Preparada por David Solano</span>
+      <span class="scroll">Desliza para ver la propuesta</span>
+    </div>
+  </div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div class="track">
+  <span>Bergamota</span><b>✦</b><span>Ámbar</span><b>✦</b><span>Vainilla</span><b>✦</b><span>Oud</span><b>✦</b><span>Jazmín</span><b>✦</b><span>Sándalo</span><b>✦</b><span>Rosa</span><b>✦</b><span>Almizcle</span><b>✦</b>
+  <span>Bergamota</span><b>✦</b><span>Ámbar</span><b>✦</b><span>Vainilla</span><b>✦</b><span>Oud</span><b>✦</b><span>Jazmín</span><b>✦</b><span>Sándalo</span><b>✦</b><span>Rosa</span><b>✦</b><span>Almizcle</span><b>✦</b>
+</div></div>
+
+<main>
+<section>
+  <div class="wrap">
+    <div class="intro">
+      <div><div class="kicker">Qué vamos a construir</div><h2 class="big reveal">Una tienda que se <em>siente</em> como tu marca.</h2></div>
+      <p class="reveal">Nada de plantillas genéricas. Empiezas con lo que necesitas hoy y creces cuando las ventas lo pidan, sin rehacer nada.</p>
+    </div>
+    <div class="rows">
+      <div class="row reveal"><h3>Portada que enamora</h3><p>Fragancias destacadas, novedades y ofertas visibles desde el primer segundo.</p></div>
+      <div class="row reveal"><h3>Catálogo con filtros</h3><p>Por género (él, ella, unisex), familia olfativa (amaderado, floral, cítrico, oriental) y precio.</p></div>
+      <div class="row reveal"><h3>Fichas completas</h3><p>Fotos, precio, presentaciones en ml y la pirámide olfativa de cada perfume.</p></div>
+      <div class="row reveal"><h3><em>Encuentra tu fragancia</em></h3><p>Una guía rápida que recomienda perfumes según el gusto de cada cliente.</p></div>
+      <div class="row reveal"><h3>Compra sin fricción</h3><p>WhatsApp en cada producto y, según el plan, carrito con pagos en línea.</p></div>
+      <div class="row reveal"><h3>Hecha para celular</h3><p>La mayoría de tus clientes comprará desde el teléfono, así que se diseña primero para móvil.</p></div>
+    </div>
+
+    <div class="pyr">
+      <div class="reveal">
+        <div class="kicker">Fichas de producto</div>
+        <h3>Cada perfume, contado como lo haría un experto.</h3>
+        <p>La pirámide olfativa muestra cómo evoluciona el aroma. El cliente entiende lo que compra y confía, aunque no lo haya probado.</p>
+      </div>
+      <div class="tiers reveal" aria-label="Pirámide olfativa de ejemplo">
+        <div class="tier"><small>Salida</small><span>Bergamota, limón</span></div>
+        <div class="tier"><small>Corazón</small><span>Jazmín, rosa, lavanda</span></div>
+        <div class="tier"><small>Fondo</small><span>Vainilla, ámbar, sándalo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plans-sec">
+  <div class="wrap">
+    <div class="intro">
+      <div><div class="kicker">Inversión</div><h2 class="big reveal">Elige tu <em>plan</em>.</h2></div>
+      <p class="reveal">Recomiendo Tienda Online: vendes y cobras solo, incluso mientras duermes. Valores en pesos colombianos.</p>
+    </div>
+    <div class="plans">
+      <article class="plan reveal">
+        <h3>Vitrina</h3>
+        <p class="for">Para mostrar tu catálogo y vender por WhatsApp.</p>
+        <div class="price">$1.1M<sup>COP</sup></div>
+        <div class="time">$1.100.000, entrega en 7 días hábiles</div>
+        <ul>
+          <li>Hasta 20 perfumes cargados</li>
+          <li>Diseño adaptado a celular</li>
+          <li>Pedidos por WhatsApp</li>
+          <li>Filtros básicos</li>
+          <li>1 sesión de capacitación</li>
+          <li class="no">Carrito y pagos en línea</li>
+        </ul>
+      </article>
+      <article class="plan star reveal">
+        <span class="tag">Recomendado</span>
+        <h3>Tienda Online</h3>
+        <p class="for">Para vender y cobrar en línea desde el primer día.</p>
+        <div class="price">$1.8M<sup>COP</sup></div>
+        <div class="time">$1.800.000, entrega en 10 días hábiles</div>
+        <ul>
+          <li>Hasta 40 perfumes cargados</li>
+          <li>Carrito con pagos: tarjeta, PSE y contraentrega</li>
+          <li>Pedidos por WhatsApp</li>
+          <li>Filtros por género y familia olfativa</li>
+          <li>Guía "Encuentra tu fragancia"</li>
+          <li>Capacitación + video guía</li>
+        </ul>
+      </article>
+      <article class="plan reveal">
+        <h3>Tienda + Identidad</h3>
+        <p class="for">Para lanzar con marca propia desde el inicio.</p>
+        <div class="price">$2.6M<sup>COP</sup></div>
+        <div class="time">$2.600.000, entrega en 15 días hábiles</div>
+        <ul>
+          <li>Todo lo de Tienda Online</li>
+          <li>Logo e identidad visual inicial</li>
+          <li>Paleta de colores y tipografías</li>
+          <li>3 piezas para redes de lanzamiento</li>
+          <li>Capacitación + video guía</li>
+        </ul>
+      </article>
+    </div>
+    <div class="care reveal">
+      <div class="p">$180K<small> /mes</small></div>
+      <div><h3>Acompañamiento mensual, opcional</h3><p>Carga de nuevos perfumes, banners de temporada (Día de la Madre, Amor y Amistad, Navidad), ajustes y soporte.</p></div>
+      <span class="np">Sin permanencia</span>
+    </div>
+    <p class="upgrade"><em>¿Empiezas con Vitrina?</em> Cuando pases a Tienda Online solo pagas la diferencia.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap process">
+    <div class="stick">
+      <div class="kicker">Proceso</div>
+      <h2 class="big">Cómo trabajamos</h2>
+      <p>De la firma a tu tienda publicada, según el plan que elijas.</p>
+      <div class="days">7–15<small>días hábiles</small></div>
+    </div>
+    <ol class="steps">
+      <li class="reveal"><div><h3>Conversación inicial</h3><p>Conozco tu negocio, tu cliente ideal y los perfumes que quieres destacar.</p></div></li>
+      <li class="reveal"><div><h3>Dirección visual</h3><p>Te presento el estilo de la página para aprobarlo antes de construir.</p></div></li>
+      <li class="reveal"><div><h3>Diseño y construcción</h3><p>Armo la tienda y cargo tus productos.</p></div></li>
+      <li class="reveal"><div><h3>Revisión</h3><p>Recorres la página y me envías tus ajustes. Dos rondas incluidas.</p></div></li>
+      <li class="reveal"><div><h3>Lanzamiento</h3><p>Publicamos, conectamos tu dominio y te enseño a manejarla.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="plans-sec">
+  <div class="wrap terms">
+    <div class="reveal">
+      <h3>Pagos a tu <em>medida</em></h3>
+      <div class="pay">
+        <div><b>A</b><span>50% al iniciar y 50% contra entrega</span></div>
+        <div><b>B</b><span>40% al iniciar, 30% al aprobar el diseño y 30% contra entrega</span></div>
+      </div>
+      <p class="methods">Bre-B, Nequi o transferencia bancaria.</p>
+    </div>
+    <div class="reveal">
+      <h3>Lo que debes saber</h3>
+      <ul class="know">
+        <li><strong>La tienda es 100% tuya.</strong> El dominio y el plan de la plataforma quedan a tu nombre.</li>
+        <li><strong>Tú pones el contenido base.</strong> Fotos, precios y datos; yo organizo y redacto las fichas.</li>
+        <li><strong>Dos rondas de ajustes incluidas.</strong> Cambios o productos adicionales se cotizan aparte.</li>
+        <li><strong>Vigencia de 15 días</strong> para esta propuesta.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="cta">
+  <div class="wrap">
+    <h2 class="reveal">Pongamos tu perfumería <em>a vender.</em></h2>
+    <p>Elige tu plan y agendamos la conversación inicial. Con el primer pago reservo tu fecha de inicio.</p>
+    <a class="btn" href="https://wa.me/573003748788?text=Hola%20David%2C%20vi%20la%20propuesta%20para%20mi%20perfumer%C3%ADa%20y%20quiero%20empezar" target="_blank" rel="noopener"><i></i>Escríbeme por WhatsApp</a>
+    <div class="sign"><div><strong>David Solano</strong>Duff, diseño, marca y contenido</div><span>@duffeldavid</span></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var els=document.querySelectorAll('.reveal');
+  if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target);}})},{threshold:.12});
+  els.forEach(function(e){io.observe(e)});
+  var a=document.querySelector('.aura');
+  if(window.matchMedia('(pointer:fine)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    window.addEventListener('pointermove',function(e){a.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)'});
+  } else { a.style.display='none'; }
+})();
+</script>
+</body>
+</html>
